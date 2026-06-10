@@ -1,0 +1,4 @@
+- uses: xu-cheng/latex-action@v4
+  with:
+    root_file: |
+      catalog.tex
