@@ -13,3 +13,8 @@ jobs:
       - uses: xu-cheng/latex-action@v4
         with:
           root_file: catalog.tex
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pdf
+          path: catalog.pdf
