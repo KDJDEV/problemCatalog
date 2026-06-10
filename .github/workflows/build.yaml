@@ -1,7 +1,14 @@
-name: Build PDF
+name: Build and Deploy PDF
 
 on:
   push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -14,7 +21,22 @@ jobs:
         with:
           root_file: catalog.tex
 
-      - uses: actions/upload-artifact@v4
+      - name: Prepare Pages site
+        run: |
+          mkdir public
+          cp catalog.pdf public/index.pdf
+
+      - uses: actions/upload-pages-artifact@v3
         with:
-          name: pdf
-          path: catalog.pdf
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
